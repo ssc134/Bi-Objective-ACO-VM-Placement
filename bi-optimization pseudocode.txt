@@ -1,0 +1,49 @@
+Input: Set of VMs and hosts with their associated resource demand and the threshold of resource utilization respectively, Set of parameters
+Output: A Pareto set P
+Algorithm:
+
+/* Initialization */
+Set values of parameter, rhoL, rhoG, alpha, tau0, q0, NA and M(no of iterations)
+Initialise Pareto set P as empty
+Initialise all pheromone values to tau0
+/* Iterative loop */
+
+for i=1 upto M
+{
+    for j=1 upto NA
+    {
+        /* Construct a solution */
+        Sort the server list PL in random order
+        Repeat until all VMs are placed
+        {
+            Introduce a new server from the server list PL 
+            Repeat until no VM fits into the server anymore
+            {
+                for each VM that can be packed into the current server
+                {
+                    Calculate the desirability of the movement according to Eq(6)
+                    Calculate the probability of movement according to Eq(7)
+                }
+                /* Choice of the virtual machine to assign */
+                Draw q
+                if( q <= q0 )
+                    Exploitation
+                else
+                    Exploration
+                /* Local pheromone updating */
+                Apply the local updating rule (Eq.(8))
+
+            }
+        }
+    }
+    /* Evaluation */
+    Calculate the values of the two objectives for each solution in current ant population
+    If a solution in the ant population is not dominated by any other solutions in the current population and the non-dominated solutions in the Pareto set P, this solution is added to the set P. Then all solutions dominated by the added one are eliminated from the set P.(see Sec. 2.3)
+    /* Global pheromone updating */
+    for each non-dominated solution in the Pareto set
+    {
+        Apply for global updating rule (Eq(9))
+    }
+    Until the maximum number of iterations is reached
+    Return the Pareto set P
+}
